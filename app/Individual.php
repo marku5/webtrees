@@ -882,7 +882,7 @@ class Individual extends GedcomRecord {
 		case 0:
 			return null;
 		case 1:
-			return reset($families);
+			return $families[0];
 		default:
 			// If there is more than one FAMC record, choose the preferred parents:
 			// a) records with '2 _PRIMARY'
@@ -905,7 +905,7 @@ class Individual extends GedcomRecord {
 			}
 
 			// d) any record
-			return reset($families);
+			return $families[0];
 		}
 	}
 

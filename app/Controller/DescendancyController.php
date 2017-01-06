@@ -48,13 +48,11 @@ class DescendancyController extends ChartController {
 	 * Create the descendancy controller
 	 */
 	public function __construct() {
-		global $WT_TREE;
-
 		parent::__construct();
 
 		// Extract parameters from form
 		$this->chart_style = Filter::getInteger('chart_style', 0, 3, 0);
-		$this->generations = Filter::getInteger('generations', 2, $WT_TREE->getPreference('MAX_DESCENDANCY_GENERATIONS'), $WT_TREE->getPreference('DEFAULT_PEDIGREE_GENERATIONS'));
+		$this->generations = Filter::getInteger('generations', 2, $this->tree()->getPreference('MAX_DESCENDANCY_GENERATIONS'), $this->tree()->getPreference('DEFAULT_PEDIGREE_GENERATIONS'));
 
 		if ($this->root && $this->root->canShowName()) {
 			$this->setPageTitle(
@@ -80,7 +78,7 @@ class DescendancyController extends ChartController {
 			return;
 		}
 		foreach ($person->getSpouseFamilies() as $family) {
-			FunctionsCharts::printSosaFamily($family->getXref(), '', -1, $label, $person->getXref(), $gpid, 0, $this->showFull());
+			FunctionsCharts::printSosaFamily($family->getXref(), '', -1, $label, $person->getXref(), $gpid, 0);
 			$i = 1;
 			foreach ($family->getChildren() as $child) {
 				$this->printChildFamily($child, $depth - 1, $label . ($i++) . '.', $person->getXref());
@@ -103,7 +101,7 @@ class DescendancyController extends ChartController {
 			echo '<img src="' . Theme::theme()->parameter('image-spacer') . '" height="3" width="3">';
 			echo '<img src="' . Theme::theme()->parameter('image-hline') . '" height="3" width="', Theme::theme()->parameter('chart-descendancy-indent') - 3, '"></td><td>';
 		}
-		FunctionsPrint::printPedigreePerson($person, $this->showFull());
+		FunctionsPrint::printPedigreePerson($person);
 		echo '</td>';
 
 		// check if child has parents and add an arrow
@@ -111,7 +109,7 @@ class DescendancyController extends ChartController {
 		echo '<td>';
 		foreach ($person->getChildFamilies() as $cfamily) {
 			foreach ($cfamily->getSpouses() as $parent) {
-				FunctionsCharts::printUrlArrow('?rootid=' . $parent->getXref() . '&amp;generations=' . $this->generations . '&amp;chart_style=' . $this->chart_style . '&amp;show_full=' . $this->showFull() . '&amp;ged=' . $parent->getTree()->getNameUrl(), I18N::translate('Start at parents'), 2);
+				FunctionsCharts::printUrlArrow('?rootid=' . $parent->getXref() . '&amp;generations=' . $this->generations . '&amp;chart_style=' . $this->chart_style . '&amp;ged=' . $parent->getTree()->getNameUrl(), I18N::translate('Start at parents'), 2);
 				// only show the arrow for one of the parents
 				break;
 			}
@@ -119,9 +117,7 @@ class DescendancyController extends ChartController {
 
 		// d'Aboville child number
 		$level = $this->generations - $depth;
-		if ($this->showFull()) {
-			echo '<br><br>&nbsp;';
-		}
+		echo '<br><br>&nbsp;';
 		echo '<span dir="ltr">'; //needed so that RTL languages will display this properly
 		if (!isset($this->dabo_num[$level])) {
 			$this->dabo_num[$level] = 0;
@@ -179,7 +175,7 @@ class DescendancyController extends ChartController {
 		echo '<ul id="' . $uid . '" class="generation">';
 		echo '<li>';
 		echo '<table><tr><td>';
-		FunctionsPrint::printPedigreePerson($spouse, $this->showFull());
+		FunctionsPrint::printPedigreePerson($spouse);
 		echo '</td>';
 
 		// check if spouse has parents and add an arrow
@@ -188,15 +184,13 @@ class DescendancyController extends ChartController {
 		if ($spouse) {
 			foreach ($spouse->getChildFamilies() as $cfamily) {
 				foreach ($cfamily->getSpouses() as $parent) {
-					FunctionsCharts::printUrlArrow('?rootid=' . $parent->getXref() . '&amp;generations=' . $this->generations . '&amp;chart_style=' . $this->chart_style . '&amp;show_full=' . $this->showFull() . '&amp;ged=' . $parent->getTree()->getNameUrl(), I18N::translate('Start at parents'), 2);
+					FunctionsCharts::printUrlArrow('?rootid=' . $parent->getXref() . '&amp;generations=' . $this->generations . '&amp;chart_style=' . $this->chart_style . '&amp;ged=' . $parent->getTree()->getNameUrl(), I18N::translate('Start at parents'), 2);
 					// only show the arrow for one of the parents
 					break;
 				}
 			}
 		}
-		if ($this->showFull()) {
-			echo '<br><br>&nbsp;';
-		}
+		echo '<br><br>&nbsp;';
 		echo '</td></tr>';
 
 		// children

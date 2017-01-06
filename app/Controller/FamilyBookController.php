@@ -25,7 +25,7 @@ use Fisharebest\Webtrees\Theme;
  * Controller for the familybook chart
  */
 class FamilyBookController extends ChartController {
-	/** @var int Whether to show spouse details */
+	/** @var string Whether to show spouse details '0' or '1' */
 	public $show_spouse;
 
 	/** @var int Number of descendancy generations to show */
@@ -44,14 +44,12 @@ class FamilyBookController extends ChartController {
 	 * Create a family-book controller
 	 */
 	public function __construct() {
-		global $WT_TREE;
-
 		parent::__construct();
 
 		// Extract the request parameters
 		$this->show_spouse = Filter::get('show_spouse', '[01]', '0');
 		$this->descent     = Filter::getInteger('descent', 0, 9, 5);
-		$this->generations = Filter::getInteger('generations', 2, $WT_TREE->getPreference('MAX_DESCENDANCY_GENERATIONS'), 2);
+		$this->generations = Filter::getInteger('generations', 2, $this->tree()->getPreference('MAX_DESCENDANCY_GENERATIONS'), 2);
 
 		$this->bhalfheight = $this->getBoxDimensions()->height / 2;
 		if ($this->root && $this->root->canShowName()) {
@@ -152,7 +150,7 @@ class FamilyBookController extends ChartController {
 		}
 		echo '<table><tr><td>';
 		if ($person) {
-			FunctionsPrint::printPedigreePerson($person, $this->showFull());
+			FunctionsPrint::printPedigreePerson($person);
 			echo '</td><td>',
 			'<img class="line2" src="', Theme::theme()->parameter('image-hline'), '" width="8" height="3">';
 		} else {
@@ -162,11 +160,11 @@ class FamilyBookController extends ChartController {
 
 		// Print the spouse
 		if ($generation === 1) {
-			if ($this->show_spouse) {
+			if ($this->show_spouse === '1') {
 				foreach ($person->getSpouseFamilies() as $family) {
 					$spouse = $family->getSpouse($person);
 					echo '</td></tr><tr><td>';
-					FunctionsPrint::printPedigreePerson($spouse, $this->showFull());
+					FunctionsPrint::printPedigreePerson($spouse);
 					$numkids += 0.95;
 					echo '</td><td>';
 				}
@@ -216,7 +214,7 @@ class FamilyBookController extends ChartController {
 			// Determine line height for two or more spouces
 			// And then adjust the vertical line for the root person only
 			$famcount = 0;
-			if ($this->show_spouse) {
+			if ($this->show_spouse === '1') {
 				// count number of spouses
 				$famcount += count($person->getSpouseFamilies());
 			}
@@ -259,7 +257,7 @@ class FamilyBookController extends ChartController {
 			'<td>';
 			$lh = $savlh; // restore original line height
 			//-- print the father box
-			FunctionsPrint::printPedigreePerson($family->getHusband(), $this->showFull());
+			FunctionsPrint::printPedigreePerson($family->getHusband());
 			echo '</td>';
 			if ($family->getHusband()) {
 				echo '<td>';
@@ -282,7 +280,7 @@ class FamilyBookController extends ChartController {
 			'<td><img class="line4" src="', Theme::theme()->parameter('image-hline'), '" height="3"></td>',
 			'<td>';
 			//-- print the mother box
-			FunctionsPrint::printPedigreePerson($family->getWife(), $this->showFull());
+			FunctionsPrint::printPedigreePerson($family->getWife());
 			echo '</td>';
 			if ($family->getWife()) {
 				echo '<td>';
@@ -317,12 +315,10 @@ class FamilyBookController extends ChartController {
 	 * @return int
 	 */
 	private function maxDescendencyGenerations($pid, $depth) {
-		global $WT_TREE;
-
 		if ($depth > $this->generations) {
 			return $depth;
 		}
-		$person = Individual::getInstance($pid, $WT_TREE);
+		$person = Individual::getInstance($pid, $this->tree());
 		if (is_null($person)) {
 			return $depth;
 		}
@@ -351,7 +347,7 @@ class FamilyBookController extends ChartController {
 	 */
 
 	private function printEmptyBox() {
-		echo $this->showFull() ? Theme::theme()->individualBoxEmpty() : Theme::theme()->individualBoxSmallEmpty();
+		echo Theme::theme()->individualBoxEmpty();
 	}
 
 	/**

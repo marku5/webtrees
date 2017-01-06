@@ -129,7 +129,7 @@ class FamilyNavigatorModule extends AbstractModule implements ModuleSidebarInter
 			?>
 			<tr>
 				<td class="facts_label">
-					<?= $menu->getMenu() ?>
+					<?= $menu->bootstrap4() ?>
 				</td>
 				<td class="center <?= $controller->getPersonStyle($spouse) ?> nam">
 					<?php if ($spouse->canShow()): ?>
@@ -154,7 +154,7 @@ class FamilyNavigatorModule extends AbstractModule implements ModuleSidebarInter
 			?>
 			<tr>
 				<td class="facts_label">
-					<?= $menu->getMenu() ?>
+					<?= $menu->bootstrap4() ?>
 				</td>
 				<td class="center <?= $controller->getPersonStyle($child) ?> nam">
 					<?php if ($child->canShow()): ?>

@@ -1,7 +1,7 @@
 <?php
 /**
  * webtrees: online genealogy
- * Copyright (C) 2016 webtrees development team
+ * Copyright (C) 2017 webtrees development team
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -15,17 +15,13 @@
  */
 namespace Fisharebest\Webtrees;
 
-/**
- * Defined in session.php
- *
- * @global Tree $WT_TREE
- */
-global $WT_TREE;
-
 use Fisharebest\Webtrees\Date\GregorianDate;
 
-define('WT_SCRIPT_NAME', 'statisticsplot.php');
-require './includes/session.php';
+/** @global Tree $WT_TREE */
+
+global $WT_TREE;
+
+require 'app/bootstrap.php';
 
 /**
  * Month of birth
@@ -1215,7 +1211,6 @@ case '21':
 	my_plot($title, $xdata, $xtitle, $ydata, $ytitle, $legend);
 	break;
 default:
-	echo '<i class="icon-loading-large"></i>';
 	break;
 }
 echo '</div>';

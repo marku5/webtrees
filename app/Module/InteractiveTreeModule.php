@@ -52,14 +52,13 @@ class InteractiveTreeModule extends AbstractModule implements ModuleTabInterface
 
 		return
 			'<script src="' . $this->js() . '"></script>' .
-			'<script src="' . WT_JQUERYUI_TOUCH_PUNCH_URL . '"></script>' .
 			'<script>' . $js . '</script>' .
 			$html;
 	}
 
 	/** {@inheritdoc} */
 	public function hasTabContent() {
-		return !Auth::isSearchEngine();
+		return true;
 	}
 
 	/** {@inheritdoc} */
@@ -97,7 +96,7 @@ class InteractiveTreeModule extends AbstractModule implements ModuleTabInterface
 
 	/** {@inheritdoc} */
 	public function getPreLoadContent() {
-		// We cannot use jQuery("head").append(<link rel="stylesheet" ...as jQuery is not loaded at this time
+		// We cannot use $("head").append(<link rel="stylesheet" ...as jQuery is not loaded at this time
 		return
 			'<script>
 			if (document.createStyleSheet) {
@@ -135,13 +134,12 @@ class InteractiveTreeModule extends AbstractModule implements ModuleTabInterface
 				->setPageTitle(I18N::translate('Interactive tree of %s', $person->getFullName()))
 				->pageHeader()
 				->addExternalJavascript($this->js())
-				->addExternalJavascript(WT_JQUERYUI_TOUCH_PUNCH_URL)
 				->addInlineJavascript($js)
 				->addInlineJavascript('
 					if (document.createStyleSheet) {
 						document.createStyleSheet("' . $this->css() . '"); // For Internet Explorer
 					} else {
-						jQuery("head").append(\'<link rel="stylesheet" type="text/css" href="' . $this->css() . '">\');
+						$("head").append(\'<link rel="stylesheet" type="text/css" href="' . $this->css() . '">\');
 					}
 				');
 			echo $html;
