@@ -16,7 +16,6 @@
 namespace Fisharebest\Webtrees\Theme;
 
 use Fisharebest\Webtrees\I18N;
-use Fisharebest\Webtrees\Menu;
 
 /**
  * The Minimal theme.
