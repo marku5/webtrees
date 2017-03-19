@@ -148,7 +148,7 @@
 .wt-primary-menu .nav-item {
 	text-align: center;
 	min-width: 5rem;
-	padding-top: 0.5rem;
+	padding-top: 0.25rem;
 }
 
 .wt-primary-menu .nav-link::before {
@@ -161,7 +161,6 @@
 
 .wt-primary-menu .dropdown-menu {
 	border-radius: 0;
-	vertical-align: middle;
 }
 
 .wt-primary-menu .dropdown-item {

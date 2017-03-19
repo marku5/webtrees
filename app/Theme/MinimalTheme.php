@@ -30,21 +30,6 @@ class MinimalTheme extends AbstractTheme implements ThemeInterface {
 	const STYLESHEET = self::ASSET_DIR . 'style.css';
 
 	/**
-	 * Add markup to the secondary menu.
-	 *
-	 * @return string
-	 */
-	protected function formatSecondaryMenu() {
-		return
-			'<ul class="nav wt-secondary-menu justify-content-end">' .
-			implode('', array_map(function (Menu $menu) { return $menu->bootstrap4(); }, $this->secondaryMenu())) .
-			'<li>' .
-			$this->formQuickSearch() .
-			'</li>' .
-			'</ul>';
-	}
-
-	/**
 	 * Allow themes to add extra scripts to the page footer.
 	 *
 	 * @return string
