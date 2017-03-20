@@ -36,6 +36,8 @@
  *     |       +---wt-site-title
  *     |       +---wt-header-search
  *     |       |   +---wt-header-search-form
+ *     |       |       +---wt-header-search-field
+ *     |       |       +---wt-header-search-button
  *     |       +---wt-secondary-navigation
  *     |       |   +---wt-secondary-menu
  *     |       +---wt-primary-navigation
@@ -76,18 +78,19 @@
 }
 
 .wt-site-logo {
+	display: none;
 }
 
 .wt-site-title {
 	order: 1;
-	flex: 1 1 50%;
+	flex: 1 1 fit-content;
 	font-size: 1.5rem;
 	padding: 0.75rem 0.75rem 0;
 }
 
 .wt-header-search {
-	order: 2;
-	flex: 0 0 auto;
+	order: 3;
+	flex: 0 0 15rem;
 	padding-top: 0.5rem;
 }
 
@@ -95,15 +98,15 @@
 }
 
 .wt-secondary-navigation {
-	order: 4;
-	flex: 0 0 auto;
+	order: 2;
+	flex: 0 0 fit-content;
+	white-space: nowrap;
 }
 
 .wt-secondary-menu {
 }
 
 .wt-secondary-menu .nav-link {
-	white-space: nowrap;
 	display: inline-block;
 	padding: 0.5rem;
 }
